@@ -1,34 +1,46 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-
-type ItemType = {
-  id: number;
-  name: string;
-  description: string;
-};
+import { ItemType } from '../types/types';
+import { api } from "./api";
 
 function SinglePage() {
-  const { id } = useParams();
-  const [item, setItem] = useState<ItemType | null>(null);
+    const { id } = useParams();
+    const [item, setItem] = useState<ItemType | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetch(`${process.env.API_URL}/items/${id}`)
-      .then(res => res.json())
-      .then(data => setItem(data))
-      .catch(err => {
-        console.error('Failed to fetch item', err);
-      });
-  }, []);
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
 
-  return (
-    <div className="detail">
-        <Link to={'/'}>Go Back</Link>
-      <h2>Item Details</h2>
-      <p>ID: {item!.id}</p>
-      <p>Name: {item!.name}</p>
-      <p>Description: {item!.description}</p>
-    </div>
-  );
+        const timeoutId = setTimeout(() => {
+            if (id) {
+                api(id, setItem, setError, signal);
+            }
+        }, 10000);
+
+        return () => {
+            clearTimeout(timeoutId);
+            abortController.abort(); // Отменяем запрос при размонтировании
+        };
+    }, [id]);
+
+    return (
+        <div className="detail">
+            <Link to={'/'}>Go Back</Link>
+            <h2>Item Details</h2>
+            {error ? (
+                <p>Error: {error}</p>
+            ) : item ? (
+                <>
+                    <p>ID: {item.id}</p>
+                    <p>Name: {item.name}</p>
+                    <p>Description: {item.description}</p>
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
+        </div>
+    );
 }
 
 export default SinglePage;

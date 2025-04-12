@@ -20,7 +20,7 @@ function useData(): ItemType[] {
 	useEffect(() => {
 		fetchItems();
 		const intervalId = setInterval(fetchItems, 10000);
-		return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
+		return () => clearInterval(intervalId);
 	}, [fetchItems]);
 
 	return items;

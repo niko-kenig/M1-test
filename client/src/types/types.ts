@@ -1,11 +1,9 @@
-// Определение типа для элемента списка
 export type ItemType = {
     id: number;
     name: string;
     description: string;
 };
 
-// Определение типа для компонента ListItem
 export type ListItemProps = {
     id: number;
     name: string;
@@ -14,14 +12,12 @@ export type ListItemProps = {
     isActive: boolean;
 };
 
-// Определение типа для хука useSort
 export type SortHookResult = [
     ItemType[],
         'ASC' | 'DESC',
     () => void
 ];
 
-// Определение типа для компонента SubTitle
 export type SubTitleProps = {
     children: React.ReactNode;
 };

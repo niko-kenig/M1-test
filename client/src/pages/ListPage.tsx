@@ -16,15 +16,15 @@ function ListPage() {
     const [filteredItems, setFilteredItems] = useState<ItemType[]>([]);
     const [query, setQuery] = useState<string>('');
 
-    const activeItemText = useMemo(() => activeItemId || 'Empty', [activeItemId]); // Используем activeItemId в зависимости
+    const activeItemText = useMemo(() => activeItemId || 'Empty', [activeItemId]);
 
     const handleItemClick = useCallback((id: number) => {
         setActiveItemId(id);
-    }, []); // Используем useCallback
+    }, []);
 
     const handleQueryChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
-    }, []); // Используем useCallback
+    }, []);
 
     useEffect(() => {
         setFilteredItems(sortedItems);
@@ -49,9 +49,9 @@ function ListPage() {
             <div className="list-container">
                 <div className="list">
                     {filteredItems.length === 0 && <span>Loading...</span>}
-                    {filteredItems.map((item, index) => (
+                    {filteredItems.map((item) => (
                         <ListItem
-                            key={item.id} // Используйте item.id вместо index для ключа
+                            key={item.id}
                             isActive={activeItemId === item.id}
                             id={item.id}
                             name={item.name}

@@ -20,7 +20,7 @@ function SinglePage() {
 
         return () => {
             clearTimeout(timeoutId);
-            abortController.abort(); // Отменяем запрос при размонтировании
+            abortController.abort();
         };
     }, [id]);
 
